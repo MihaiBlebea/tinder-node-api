@@ -3,5 +3,9 @@
         "facebookUserId": "714803108606886",
         "facebookToken": "EAAGm0PX4ZCpsBAD3U7N55Od9ZAZBSglPX6gC1IVnizHcMfWCLPdWkBHwyjYi8abHC3V1TJUjWgM0bzyddteaCLcgPLMQRfZCyKbiOGMHrUNEiKc2IK7GneGEip1EjATItQkFoO7qqaPubZCPlLenjyxaVlZA4PXJj6ix2ZC3dqM3rkAIvz3AQPr8qgf7yZBlRZCQZD"
     },
-    "tinderToken": "796cdf60-e355-4c05-a968-5c38dcc22a1e"
+    "tinderToken": "796cdf60-e355-4c05-a968-5c38dcc22a1e",
+    "mongoDB": {
+        "url": "mongodb://localhost:27017",
+        "database": "TinderDB"
+    }
 }
