@@ -1,0 +1,31 @@
+{
+    "name": "tinder-node",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "migrate": "node ./src/database/migrations.js",
+        "watch": "nodemon index.js",
+        "sync:matches": "node ./src/services/sync_matches.js",
+        "send:broadcast": "node ./src/services/send_broadcast.js",
+        "search:bio": "node ./src/services/search_bio.js",
+        "farm:girls": "node ./src/services/farm_girls.js",
+        "test:service": "node ./src/services/test.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "config": "^1.30.0",
+        "cors": "^2.8.4",
+        "express": "^4.16.3",
+        "jsesc": "^2.5.1",
+        "moment": "^2.22.2",
+        "mongodb": "^3.1.1",
+        "mysql": "github:mysqljs/mysql",
+        "tinder": "^1.19.0"
+    },
+    "devDependencies": {
+        "nodemon": "^1.17.5"
+    }
+}
