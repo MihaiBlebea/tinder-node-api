@@ -8,8 +8,8 @@
         "migrate": "node ./src/database/migrations.js",
         "watch": "nodemon index.js",
         "sync:matches": "node ./src/services/sync_matches.js",
-        "send:broadcast": "node ./src/services/send_broadcast.js",
-        "search:bio": "node ./src/services/search_bio.js",
+        "send:broadcast": "node ./src/services/message.js",
+        "search:bio": "node ./src/services/search.js",
         "farm:girls": "node ./src/services/farm_girls.js",
         "test:service": "node ./src/services/test.js"
     },
@@ -24,6 +24,7 @@
         "mongodb": "^3.1.1",
         "mongoose": "^5.2.1",
         "mysql": "github:mysqljs/mysql",
+        "node-cron": "^1.2.1",
         "tinder": "^1.19.0"
     },
     "devDependencies": {

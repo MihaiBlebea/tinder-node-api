@@ -1,19 +1,29 @@
-var tinder = require('./../tinder.js');
-var matchModel = require('./../database/match_model.js')
+const tinder = require('./../tinder.js')
+const Match = require('./../../mongoose/models/Match.js')
 
-tinder.getHistory(function(error, result) {
-    var matches = result.matches;
-    matches.map((match)=> {
-        matchModel.getByGirl(match.person._id, (result)=> {
-            if(result.length == 0)
-            {
-                matchModel.insert({
-                    match_id: match.id,
-                    tinder_id: match.person._id
-                }, (res)=> {
-                    console.log(res)
-                })
+var syncMatches = (callback)=> {
+    tinder.getHistory(function(error, result) {
+        result.matches.map((match)=> {
+            var payload = {
+                tinder_id: match.person._id,
+                match_id: match.id
             }
+            new Match(payload).save().then((result)=> {
+                console.log(result)
+            }).catch((error)=> {
+                console.log(error)
+            })
         })
+
+        callback()
     })
-})
+}
+
+if(require.main === module)
+{
+    syncMatches(()=> {
+        console.log('Sync matches done')
+    })
+}
+
+module.exports = syncMatches

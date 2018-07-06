@@ -1,15 +1,18 @@
-var girlModel = require('./../database/girl_model.js')
+const Girl = require('./../../mongoose/models/Girl.js')
+
 
 var searchBio = (word, callback)=> {
-    girlModel.getAll((result)=> {
+    Girl.find().then((girls)=> {
         var found = []
-        result.filter((girl)=> {
+        girls.filter((girl)=> {
             if(girl.bio.search(word) > -1)
             {
                 found.push(girl)
             }
         })
         callback(found)
+    }).catch((error)=> {
+        console.log(error)
     })
 }
 
@@ -20,3 +23,5 @@ if(require.main === module)
         console.log(result)
     })
 }
+
+module.exports = searchBio
