@@ -11,13 +11,14 @@ const { authenticate } = require('./src/middlewares.js')
 const Girl = require('./mongoose/models/Girl.js')
 const User = require('./mongoose/models/User.js')
 
+
 var app = express();
 
 app.use(cors())
 app.use(bodyParser.json())
 
 // Auth to app routes //
-app.post('/signup', (request, response)=> {
+app.post('/users/signup', (request, response)=> {
     var payload = {
         name: request.body.name,
         phone: request.body.phone,
@@ -36,6 +37,19 @@ app.post('/signup', (request, response)=> {
 
 app.get('/users/me', authenticate, (request, response)=> {
     response.json(request.user)
+})
+
+app.post('/users/login', (request, response)=> {
+    var email = request.body.email
+    var password = request.body.password
+    User.findByCredentials(email, password).then((user)=> {
+        user.generateJWT().then((token)=> {
+            response.header('x-auth', token).json(user)
+        })
+    }).catch((error)=> {
+        console.log(error)
+        response.status(400).send()
+    })
 })
 
 // Testing purpose //
