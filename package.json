@@ -7,25 +7,29 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "migrate": "node ./src/database/migrations.js",
         "watch": "nodemon index.js",
-        "sync:matches": "node ./src/services/sync_matches.js",
-        "send:broadcast": "node ./src/services/message.js",
+        "match:sync": "node ./src/services/sync_matches.js",
+        "message:broadcast": "node ./src/services/message.js",
         "search:bio": "node ./src/services/search.js",
-        "farm:girls": "node ./src/services/farm_girls.js",
+        "girls:farm": "node ./src/services/farm_girls.js",
         "test:service": "node ./src/services/test.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "body-parser": "^1.18.3",
         "config": "^1.30.0",
         "cors": "^2.8.4",
+        "crypto-js": "^3.1.9-1",
         "express": "^4.16.3",
         "jsesc": "^2.5.1",
+        "jsonwebtoken": "^8.3.0",
         "moment": "^2.22.2",
         "mongodb": "^3.1.1",
         "mongoose": "^5.2.1",
-        "mysql": "github:mysqljs/mysql",
+        "mongoose-paginate": "^5.0.3",
         "node-cron": "^1.2.1",
-        "tinder": "^1.19.0"
+        "tinder": "^1.19.0",
+        "validator": "^10.4.0"
     },
     "devDependencies": {
         "nodemon": "^1.17.5"

@@ -2,47 +2,53 @@ const express = require('express')
 const config = require('config')
 const jsesc = require('jsesc')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 
 
 const tinder = require('./src/tinder.js')
 const crontab = require('./src/crontab.js')
+const { hashPassword } = require('./src/hash.js')
+const { authenticate } = require('./src/middlewares.js')
 const Girl = require('./mongoose/models/Girl.js')
-
-var girl = require('./src/database/girl_model')
-var image = require('./src/database/image_model')
+const User = require('./mongoose/models/User.js')
 
 var app = express();
 
 app.use(cors())
+app.use(bodyParser.json())
 
-// app.get('/get', (request, response)=> {
-//     tinder.getRecommendations(10, function(error, data) {
-//         if(error) throw error;
-//
-//         data.results.map((item)=> {
-//             girl.insert({
-//                 tinder_id: item._id,
-//                 name: jsesc(item.name),
-//                 bio: jsesc(item.bio),
-//                 birth_date: item.birth_date,
-//                 ping_time: item.ping_time
-//             }, (result)=> {
-//                 item.photos.map((img)=> {
-//                     image.insert({
-//                         girl_id: result.insertId,
-//                         tinder_image_id: img.id,
-//                         path: img.url
-//                     }, (imageResult)=> {
-//                         console.log(imageResult)
-//                     })
-//                 })
-//             })
-//         })
-//         response.json(data)
-//     });
-// })
+// Auth to app routes //
+app.post('/signup', (request, response)=> {
+    var payload = {
+        name: request.body.name,
+        phone: request.body.phone,
+        email: request.body.email,
+        password: hashPassword(request.body.password),
+    }
+    var user = new User(payload)
+    user.save().then(()=> {
+        return user.generateJWT()
+    }).then((token)=> {
+        response.header('x-auth', token).json(user)
+    }).catch((error)=> {
+        response.json(error)
+    })
+})
 
-app.get('/auth', (request, response)=> {
+app.get('/users/me', authenticate, (request, response)=> {
+    response.json(request.user)
+})
+
+// Testing purpose //
+app.get('/get', (request, response)=> {
+    tinder.getRecommendations(10, function(error, data) {
+        if(error) throw error;
+        response.json(data)
+    });
+})
+
+// Tnder routes //
+app.get('/tinder-auth', (request, response)=> {
     var facebookUserId = config.get('facebook.facebookUserId')
     var facebookToken = config.get('facebook.facebookToken')
     tinder.authorize(facebookToken, facebookUserId, function() {
@@ -52,24 +58,12 @@ app.get('/auth', (request, response)=> {
 })
 
 app.get('/girls', (request, response)=> {
-    var perPage = 20;
-    var page = request.query.page
-    if(page == null || page == undefined)
-    {
-        page = 0
-    }
-    var offset = perPage * page
-    girl.countRows((count)=> {
-        girl.getPaginated(perPage, offset, (results)=> {
-            var pages = (count[0].rows % perPage == 0) ? Math.floor(count[0].rows / perPage) : Math.floor(count[0].rows / perPage) + 1;
-            response.json({
-                girls: results,
-                paginate: {
-                    rows: count[0].rows,
-                    pages: pages
-                }
-            })
-        })
+    const perPage = 20;
+    var pageNumber = (request.query.page == null) ? 1 : request.query.page;
+    Girl.paginate({}, { page: pageNumber, limit: perPage }).then((girls)=> {
+         response.json(girls)
+    }).catch((error)=> {
+        console.log(error)
     })
 })
 
@@ -82,14 +76,6 @@ app.get('/girl/:id', (request, response)=> {
         }).catch((error)=> {
             console.log(error)
         })
-        // girl.get(id, (result)=> {
-        //     image.getImgForGirl(result.id, (imgs)=> {
-        //         response.json({
-        //             girl: result,
-        //             images: imgs
-        //         })
-        //     })
-        // })
     }
 })
 

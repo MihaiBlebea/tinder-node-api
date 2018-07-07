@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
-const config = require('./../config/default.json').mongoDB
+const mongoosePaginate = require('mongoose-paginate')
+const config = require('config')
 
-const url = config.url;
-const database = config.database;
+const url = config.get('mongoDB.url');
+const database = config.get('mongoDB.database');
 
+// Setup
 mongoose.Promise = global.Promise;
+mongoose.plugin(mongoosePaginate);
 
 mongoose.connect(url + '/' + database)
 
