@@ -7,7 +7,6 @@ const bodyParser = require('body-parser')
 
 const tinder = require('./src/tinder.js')
 const crontab = require('./src/crontab.js')
-const { hashPassword } = require('./src/hash.js')
 const { authenticate } = require('./src/middlewares.js')
 const Girl = require('./mongoose/models/Girl.js')
 const User = require('./mongoose/models/User.js')
@@ -23,7 +22,7 @@ app.post('/signup', (request, response)=> {
         name: request.body.name,
         phone: request.body.phone,
         email: request.body.email,
-        password: hashPassword(request.body.password),
+        password: request.body.password,
     }
     var user = new User(payload)
     user.save().then(()=> {

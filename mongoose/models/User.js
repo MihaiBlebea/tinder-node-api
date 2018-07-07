@@ -1,6 +1,8 @@
 const connection = require('./../connect.js')
 const validator = require('validator');
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+
 
 const salt = 'tindersecretsalt'
 
@@ -55,6 +57,23 @@ var UserSchema = new connection.Schema({
     }]
 })
 
+// Middleware //
+UserSchema.pre('save', function(next) {
+    var user = this
+    if(user.isModified('password'))
+    {
+        bcrypt.genSalt(10, (error, salt)=> {
+            bcrypt.hash(user.password, salt, (error, hashedPassword)=> {
+                user.password = hashedPassword
+                next()
+            })
+        })
+    } else {
+        next()
+    }
+})
+
+// Custom methods //
 UserSchema.methods.toJSON = function() {
     var userObject = this.toObject()
     return {
