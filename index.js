@@ -52,6 +52,14 @@ app.post('/users/login', (request, response)=> {
     })
 })
 
+app.delete('/users/me/token', authenticate, (request, response)=> {
+    request.user.deleteToken(request.token).then(()=> {
+        response.status(200).send()
+    }, ()=> {
+        response.status(400).send()
+    })
+})
+
 // Testing purpose //
 app.get('/get', (request, response)=> {
     tinder.getRecommendations(10, function(error, data) {
@@ -82,9 +90,10 @@ app.get('/girls', (request, response)=> {
 
 app.get('/girl/:id', (request, response)=> {
     var tinder_id = request.params.id;
-    if(id !== null && id !== undefined)
+    if(tinder_id !== null && tinder_id !== undefined)
     {
         Girl.findOne({ tinder_id: tinder_id }).then((girl)=> {
+            console.log(girl)
             response.json(girl)
         }).catch((error)=> {
             console.log(error)

@@ -3,7 +3,8 @@ const connection = require('./../connect.js')
 var Girl = connection.model('Girl', {
     tinder_id: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String,

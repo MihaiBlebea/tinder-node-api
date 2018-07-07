@@ -120,6 +120,16 @@ UserSchema.statics.findByCredentials = function(email, password) {
     })
 }
 
+UserSchema.methods.deleteToken = function(token) {
+    return this.update({
+        $pull: {
+            tokens: {
+                token: token
+            }
+        }
+    })
+}
+
 UserSchema.methods.generateJWT = function() {
     var access = 'auth'
     var token = jwt.sign({ _id: this._id.toHexString(), access }, salt).toString()
