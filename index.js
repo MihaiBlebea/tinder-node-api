@@ -88,6 +88,20 @@ app.get('/girls', (request, response)=> {
     })
 })
 
+app.post('/girls/search', (request, response)=> {
+    var term = request.body.term;
+    console.log(term)
+    if(term !== null && term !== undefined)
+    {
+        Girl.find({ bio: { "$regex": term, "$options": "i" } }).then((girls)=> {
+            console.log(girls)
+            response.json(girls)
+        }).catch((error)=> {
+            console.log(error)
+        })
+    }
+})
+
 app.get('/girl/:id', (request, response)=> {
     var tinder_id = request.params.id;
     if(tinder_id !== null && tinder_id !== undefined)
@@ -158,10 +172,13 @@ app.get('/account', (request, response)=> {
 app.get('/wait', (request, response)=> {
     tinder.getAccount((error, result)=> {
         console.log(error)
-        response.json({
-            likes: result.rating.likes_remaining,
-            wait: result.rating.rate_limited_until
-        })
+        if(result !== null)
+        {
+            response.json({
+                likes: result.rating.likes_remaining,
+                wait: result.rating.rate_limited_until
+            })
+        }
     })
 })
 

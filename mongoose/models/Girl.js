@@ -1,6 +1,6 @@
 const connection = require('./../connect.js')
 
-var Girl = connection.model('Girl', {
+var GirlSchema = new connection.Schema({
     tinder_id: {
         type: String,
         required: true,
@@ -25,5 +25,8 @@ var Girl = connection.model('Girl', {
         default: false
     }
 })
+
+
+var Girl = connection.model('Girl', GirlSchema)
 
 module.exports = Girl
