@@ -106,11 +106,8 @@ app.get('/girl/:id', (request, response)=> {
     var tinder_id = request.params.id;
     if(tinder_id !== null && tinder_id !== undefined)
     {
-        Girl.findOne({ tinder_id: tinder_id }).then((girl)=> {
-            console.log(girl)
-            response.json(girl)
-        }).catch((error)=> {
-            console.log(error)
+        tinder.getUser(tinder_id, (error, girl)=> {
+            response.json(girl.results)
         })
     }
 })

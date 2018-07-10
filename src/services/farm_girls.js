@@ -16,7 +16,7 @@ var farm = (perRequest)=> {
                 images: girl.photos
             }
             new Girl(payload).save().then((result)=> {
-                console.log(result)
+                console.log(`Farmed girl named: ${result.name}`)
             }).catch((error)=> {
                 console.log(error)
             })
@@ -24,19 +24,23 @@ var farm = (perRequest)=> {
     })
 }
 
+// Run script from command line
+if(require.main === module)
+{
+    var count = 0
+    var max = 10
+    var interval = setInterval(()=> {
+        console.log('Farm batch ' + count)
+        farm(10)
 
-var count = 0
-var max = 10
-var interval = setInterval(()=> {
-    console.log('Farm batch ' + count)
-    farm(10)
+        count++
+        if(count == max)
+        {
+            clearInterval(interval)
+        }
+    }, 10000)
+}
 
-    count++
-    if(count == max)
-    {
-        clearInterval(interval)
-    }
-}, 10000)
 
 module.exports = {
     farm: farm

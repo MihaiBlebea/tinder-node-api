@@ -3,6 +3,7 @@ const Match = require('./../../mongoose/models/Match.js')
 
 var syncMatches = (callback)=> {
     tinder.getHistory(function(error, result) {
+        if(error) throw error
         result.matches.map((match)=> {
             var payload = {
                 tinder_id: match.person._id,
