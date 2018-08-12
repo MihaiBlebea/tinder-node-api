@@ -5,7 +5,7 @@ const { prompt } = require('inquirer')
 require('dotenv').config()
 const { sendMessage, sendBroadcast, sendFirstMessage } = require('./services/message')
 const { autoLike } = require('./services/auto-like')
-const { interval } = require('./services/utils')
+const { interval, loginUser, registerUser } = require('./services/utils')
 
 
 const questions = [
@@ -26,6 +26,47 @@ const questionsBroadcast = [
         type : 'input',
         name : 'message',
         message : 'Enter the message you want to send:'
+    }
+]
+
+const questionsRegister = [
+    {
+        type : 'input',
+        name : 'username',
+        message : 'Enter a username:'
+    },
+    {
+        type : 'input',
+        name : 'password',
+        message : 'Enter a password:'
+    },
+    {
+        type : 'input',
+        name : 'passwordConfirm',
+        message : 'Enter your password again:'
+    },
+    {
+        type : 'input',
+        name : 'facebook_id',
+        message : 'Enter your facebook id:'
+    },
+    {
+        type : 'input',
+        name : 'facebook_token',
+        message : 'Enter your facebook token:'
+    }
+]
+
+const questionsLogin = [
+    {
+        type : 'input',
+        name : 'username',
+        message : 'Enter your username:'
+    },
+    {
+        type : 'input',
+        name : 'password',
+        message : 'Enter your password:'
     }
 ]
 
@@ -76,11 +117,37 @@ program
     })
 
 program
+    .command('user:register')
+    .alias('register')
+    .description('Register a new user')
+    .action(()=> {
+        prompt(questionsRegister).then((answers)=> {
+            if(answers.password === answers.passwordConfirm)
+            {
+                registerUser(answers.username, answers.password, answers.facebookId, answers.facebookToken)
+            }
+        })
+    })
+
+program
+    .command('user:login')
+    .alias('login')
+    .description('Login your user')
+    .action(()=> {
+        prompt(questionsLogin).then((answers)=> {
+            loginUser(answers.username, answers.password, (user)=> {
+                console.log(user)
+            })
+        })
+    })
+
+program
     .command('test')
     .description('Test command')
     .action(()=> {
-        interval(10, ()=> {
-            console.log('Mihai')
+        // saveUserToDatabase('facebookid2', 'facebooktoken2')
+        getUsersFromDatabase((results)=> {
+            console.log(results)
         })
     })
 

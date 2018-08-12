@@ -35,13 +35,12 @@ router.get('/user/:id', (request, response)=> {
 })
 
 router.get('/news', (request, response)=> {
-    tinder.setAuthToken(process.env.TINDER_TOKEN)
-    // tinder.authorize(process.env.FACEBOOK_TOKEN, process.env.FACEBOOK_ID, ()=> {
+    tinder.authorize(process.env.FACEBOOK_TOKEN, process.env.FACEBOOK_ID, ()=> {
         tinder.getUpdates((error, result)=> {
             if(error) throw error
             response.json(result)
         })
-    // })
+    })
 })
 
 router.get('/history', (request, response)=> {

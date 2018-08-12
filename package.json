@@ -5,17 +5,12 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "watch": "nodemon index.js",
-        "match:sync": "node ./src/services/sync_matches.js",
-        "message:broadcast": "node ./src/services/message.js",
-        "search:bio": "node ./src/services/search.js",
-        "girls:farm": "node ./src/services/farm_girls.js",
-        "test:service": "node ./src/services/test.js",
-        "cli": "node ./src/cli.js"
+        "watch": "nodemon index.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "axios": "^0.18.0",
         "body-parser": "^1.18.3",
         "commander": "^2.17.1",
         "cors": "^2.8.4",
@@ -24,6 +19,7 @@
         "inquirer": "^6.1.0",
         "moment": "^2.22.2",
         "node-cron": "^1.2.1",
+        "superagent": "^3.8.3",
         "tinder": "^1.19.0"
     },
     "devDependencies": {

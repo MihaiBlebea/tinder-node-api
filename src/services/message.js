@@ -57,8 +57,8 @@ const sendFirstMessage = (message)=> {
         matches.filter((match)=> {
             if(match.messages.length === 0)
             {
-                sendMessage(match.id, insertName(message, getMatchName(match)), ()=> {
-                    console.log(counter)
+                sendMessage(match.id, insertName(message, getMatchName(match)), (result)=> {
+                    console.log(result)
                 })
             }
         })

@@ -1,7 +1,8 @@
-var tinder = require('tinder');
-var client = new tinder.TinderClient();
+// var tinder = require('tinder')
+const tinder = require('./tinder-api')
+var client = new tinder.TinderClient()
 
-client.setAuthToken(process.env.TINDER_TOKEN)
+client.setAuthToken()
 console.log('Tinder is authorized: ', client.isAuthorized())
 
 module.exports = client
