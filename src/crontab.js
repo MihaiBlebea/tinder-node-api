@@ -4,17 +4,15 @@ const { autoLike } = require('./services/auto_like.js')
 
 
 var farmGirlsCron = ()=> {
-    cron.schedule('*/10 * * * *', function(){
-        console.log('Farming girls every 10 minutes');
+    cron.schedule('*/10 * * * *', ()=> {
         farm(10)
-    });
+    })
 }
 
 var autoLikeCron = ()=> {
-    cron.schedule('* * * * *', function(){
-        console.log('Running code');
+    cron.schedule('* * * * *', ()=> {
         autoLike(10)
-    });
+    })
 }
 
 var run = ()=> {
