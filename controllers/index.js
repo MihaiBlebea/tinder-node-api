@@ -1,33 +1,26 @@
 const express = require('express')
 const router = express.Router()
 const { getNew } = require('./../src/services/listen')
+const { getAllMessages, excludeOwnMessages, isQuestion, parseConv, compare } = require('./../src/services/chat-bot')
+const { excludeNullFromArray, lowerCase } = require('./../src/services/utils')
 
 
 router.use('/tinder', require('./tinder'))
 
+const message = "How old are you?"
+
 router.get('/test', (request, response)=> {
-    const func = (x)=> {
-        return new Promise(function(resolve, reject) {
-            if(x > 10)
+    getAllMessages((conversations)=> {
+        let parsedConv = []
+        conversations.forEach((conversation)=> {
+            if(parseConv(conversation).length > 0)
             {
-                resolve('Is greater then 10')
-            } else {
-                reject('Is less then 10')
+                parsedConv = parsedConv.concat(parseConv(conversation))
             }
-        });
-    }
-    // let tinderApi = new TinderApi('token')
-    // tinderApi.auth(process.env.FACEBOOK_TOKEN, process.env.FACEBOOK_ID, (results)=> {
-    //     response.json(results)
-    // })
-    getNew((result)=> {
-        response.json(result)
+        })
+        response.json(compare(message, parsedConv))
+        // response.json(parsedConv)
     })
-    // func(11).then((result)=> {
-    //     response.send(result)
-    // }).catch((error)=> {
-    //     response.send(error)
-    // })
 })
 
 module.exports = router

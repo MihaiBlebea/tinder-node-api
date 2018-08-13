@@ -5,13 +5,23 @@ require('dotenv').config()
 const interval = (max, func)=> {
     var counter = 0
     var interval = setInterval(()=> {
-        func()
+        func(counter)
         counter++
         if(counter == max)
         {
             clearInterval(interval)
         }
     }, 4000)
+}
+
+const excludeNullFromArray = (array)=> {
+    return array.filter((item)=> {
+        return item.length > 0
+    })
+}
+
+const lowerCase = (message)=> {
+    return message.toLowerCase()
 }
 
 const registerUser = (username, password, facebookId, facebookToken)=> {
@@ -49,6 +59,8 @@ const validateCredentials = (username, password, users)=> {
 
 module.exports = {
     interval,
+    excludeNullFromArray,
+    lowerCase,
     registerUser,
     loginUser
 }

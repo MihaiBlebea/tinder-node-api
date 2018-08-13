@@ -52,7 +52,7 @@ const autoLike = (number)=> {
         if(result === true)
         {
             getProfiles(number, (profiles)=> {
-                interval(profiles.length, ()=> {
+                interval(profiles.length, (counter)=> {
                     likeProfile(profiles[counter]._id, (result)=> {
                         if(result.match !== false)
                         {
