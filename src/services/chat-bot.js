@@ -68,6 +68,7 @@ const compare = (message, messages)=> {
             {
                 result = {
                     score: score,
+                    message: message,
                     question: messages[i].question,
                     answer: messages[i].answer
                 }
@@ -75,6 +76,7 @@ const compare = (message, messages)=> {
         } else {
             result = {
                 score: score,
+                message: message,
                 question: messages[i].question,
                 answer: messages[i].answer
             }
