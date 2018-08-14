@@ -1,6 +1,7 @@
 const similarity = require('string-similarity')
 const tinder = require('./../tinder')
 const { sendMessage } = require('./message')
+const { getChatBotData, updateChatBotData } = require('firebase')
 require('dotenv').config()
 
 
@@ -91,6 +92,20 @@ const parseConv = (conversation)=> {
     return result
 }
 
+const updateStorageWithNewMessages = (callback)=> {
+    getTrainingData((messages)=> {
+        getChatBotData((oldData)=> {
+            let newData = messages.filter((message)=> {
+                return oldData.map((oldMessage)=> {
+                    return oldMessage.id
+                }).includes(message.id) === false
+            })
+            updateChatBotData(newData)
+            callback()
+        })
+    })
+}
+
 const partnerMessage = (message)=> {
     return (message.from === process.env.TINDER_ID) ? false : true
 }
@@ -149,6 +164,7 @@ module.exports = {
     getResponseToQuestion,
     getPartnerLastMessage,
     getTrainingData,
+    updateStorageWithNewMessages,
     parseConv,
     compare,
     chatbot

@@ -3,10 +3,6 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 require('dotenv').config()
 
-const tinder = require('./src/tinder.js')
-// const crontab = require('./src/crontab.js')
-
-
 var app = express();
 
 app.use(cors())

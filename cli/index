@@ -6,7 +6,7 @@ require('dotenv').config()
 const { sendMessage, sendBroadcast, sendFirstMessage } = require('./../src/services/message')
 const { getResponseToQuestion, getTrainingData } = require('./../src/services/chat-bot')
 const { autoLike } = require('./../src/services/auto-like')
-const { runChatBot, runAutoLike } = require('./../src/services/crontab')
+const { runChatBot, runAutoLike, runStoreMessages } = require('./../src/services/crontab')
 const { storeChatBotData, getChatBotData, updateChatBotData } = require('./../src/services/firebase')
 
 const questions = require('./questions.json')
@@ -67,9 +67,16 @@ program
             case('runChatBot'):
                 runChatBot()
                 break
+            case('runAutoLike'):
+                runAutoLike()
+                break
+            case('runStoreMessages'):
+                runStoreMessages()
+                break
             default:
                 runChatBot()
                 runAutoLike()
+                runStoreMessages()
                 break
         }
     })
@@ -89,7 +96,15 @@ program
     .description('Test command')
     .action(()=> {
         getTrainingData((messages)=> {
-            storeChatBotData(messages)
+            getChatBotData((oldData)=> {
+                let newData = messages.filter((message)=> {
+                    return oldData.map((oldMessage)=> {
+                        return oldMessage.id
+                    }).includes(message.id) === false
+                })
+                updateChatBotData(newData)
+            })
+            // storeChatBotData(messages)
         })
     })
 

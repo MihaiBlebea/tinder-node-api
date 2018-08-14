@@ -1,32 +1,39 @@
 const cron = require('node-cron')
 const { autoLike } = require('./auto-like')
-const { chatbot, getTrainingData } = require('./chat-bot')
+const { chatbot, getTrainingData, updateStorageWithNewMessages } = require('./chat-bot')
 const { updateChatBotData } = require('./firebase')
 
 
+const getDate = ()=> {
+    return new Date().toString()
+}
+
 const runChatBot = ()=> {
-    console.log('runChatBot started')
+    console.log('runChatBot started at ' + getDate())
     cron.schedule('*/10 * * * *', ()=> {
         chatbot()
-        console.log('chatbot was run')
+        console.log('chatbot was run at ' + getDate())
     })
 }
 
 const runAutoLike = ()=> {
-    console.log('runAutoLike started')
+    console.log('runAutoLike started at ' + getDate())
     cron.schedule('0 * * * *', ()=> {
         autoLike(10)
     })
 }
 
 const runStoreMessages = ()=> {
-    console.log('runStoreMessages started')
-    cron.schedule('0 * * * *', ()=> {
-        updateChatBotData(['Serban', 'Mihai'])
+    console.log('runStoreMessages started at ' + getDate())
+    cron.schedule('0 */6 * * *', ()=> {
+        updateStorageWithNewMessages(()=> {
+            console.log('runStoreMessages was run at ' + getDate())
+        })
     })
 }
 
 module.exports = {
     runChatBot,
-    runAutoLike
+    runAutoLike,
+    runStoreMessages
 }
