@@ -27,6 +27,12 @@ const updateChatBotData = (payload)=> {
     })
 }
 
+const storeTask = (task)=> {
+    if(typeof task !== 'object') throw 'Task should be an object'
+    database.ref('tasks').set(task
+    )
+}
+
 module.exports = {
     storeChatBotData,
     getChatBotData,

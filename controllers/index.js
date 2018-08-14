@@ -7,21 +7,9 @@ const { sendMessage } = require('./../src/services/message')
 
 router.use('/tinder', require('./tinder'))
 
-const message = "Hey...um I think despicable me... you?"
+const message = "Where are you from?"
 
 router.get('/test', (request, response)=> {
-    // getNewMessages((conversations)=> {
-    //     conversations.map((conversation)=> {
-    //         let lastMessage = getPartnerLastMessage(conversation)
-    //         if(lastMessage)
-    //         {
-    //             getResponseToQuestion(lastMessage.message, (result)=> {
-    //                 sendMessage(lastMessage.match_id, result.answer)
-    //             })
-    //         }
-    //     })
-    //     // response.json(conversations)
-    // })
     getResponseToQuestion(message, (result)=> {
         response.json(result)
     })

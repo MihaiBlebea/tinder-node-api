@@ -54,7 +54,7 @@ program
     .alias('likes')
     .description('Fetch profiles and autolike everyone of them')
     .action((number)=> {
-        (number !== undefined) ? autoLike(number) : autoLike(10)
+        autoLike(number)
     })
 
 program

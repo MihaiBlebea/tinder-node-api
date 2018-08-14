@@ -19,13 +19,13 @@ const runChatBot = ()=> {
 const runAutoLike = ()=> {
     console.log('runAutoLike started at ' + getDate())
     cron.schedule('0 * * * *', ()=> {
-        autoLike(10)
+        autoLike(100)
     })
 }
 
 const runStoreMessages = ()=> {
     console.log('runStoreMessages started at ' + getDate())
-    cron.schedule('0 */6 * * *', ()=> {
+    cron.schedule('0 * * * *', ()=> {
         updateStorageWithNewMessages(()=> {
             console.log('runStoreMessages was run at ' + getDate())
         })

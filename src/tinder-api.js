@@ -156,7 +156,7 @@ function TinderClient() {
         //         callback(error, res);
         //     }
         // });
-        xAuthToken = '986091f6-867c-4f16-b073-82831fcc2541'
+        xAuthToken = '30a48981-a231-413e-8fd2-b3f63b6b83a8'
         _this.userId = '5b2ad3a0677dd9b75cb8eeb2'
         _this.defaults = null
         callback()

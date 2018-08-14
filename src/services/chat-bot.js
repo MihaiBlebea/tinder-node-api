@@ -29,6 +29,7 @@ const getNewMessages = (callback)=> {
 
 const getResponseToQuestion = (message, callback)=> {
     getTrainingData((messages)=> {
+        console.log(messages)
         callback(compare(message, messages))
     })
 }
@@ -116,21 +117,12 @@ const ownMessage = (message)=> {
 
 const compare = (message, messages)=> {
     let result = {}
+    result.score = 0
     for(let i = 0; i < messages.length; i++)
     {
         let score = similarity.compareTwoStrings(message, messages[i].question)
-        if(i > 0)
+        if(result.score < score)
         {
-            if(result.score < score)
-            {
-                result = {
-                    score: score,
-                    message: message,
-                    question: messages[i].question,
-                    answer: messages[i].answer
-                }
-            }
-        } else {
             result = {
                 score: score,
                 message: message,
