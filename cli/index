@@ -6,7 +6,7 @@ require('dotenv').config()
 const { sendMessage, sendBroadcast, sendFirstMessage } = require('./../src/services/message')
 const { getResponseToQuestion } = require('./../src/services/chat-bot')
 const { autoLike } = require('./../src/services/auto-like')
-const { runChatBot } = require('./../src/services/crontab')
+const { runChatBot, runAutoLike } = require('./../src/services/crontab')
 const { storeChatBotData, getChatBotData, updateChatBotData } = require('./../src/services/firebase')
 
 const questions = require('./questions.json')
@@ -69,6 +69,7 @@ program
                 break
             default:
                 runChatBot()
+                runAutoLike()
                 break
         }
     })

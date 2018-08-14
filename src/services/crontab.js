@@ -13,7 +13,14 @@ const runChatBot = ()=> {
 
 const runAutoLike = ()=> {
     console.log('runAutoLike started')
-    cron.schedule('*/10 * * * *', ()=> {
+    cron.schedule('0 * * * *', ()=> {
+        autoLike(10)
+    })
+}
+
+const runStoreMessages = ()=> {
+    console.log('runStoreMessages started')
+    cron.schedule('0 * * * *', ()=> {
         autoLike(10)
     })
 }

@@ -27,15 +27,18 @@ const getNewMessages = (callback)=> {
 }
 
 const getResponseToQuestion = (message, callback)=> {
-    getAllMessages((conversations)=> {
-        let parsedConv = []
-        conversations.forEach((conversation)=> {
-            if(parseConv(conversation).length > 0)
-            {
-                parsedConv = parsedConv.concat(parseConv(conversation))
-            }
-        })
-        callback(compare(message, parsedConv))
+    // getAllMessages((conversations)=> {
+    //     let parsedConv = []
+    //     conversations.forEach((conversation)=> {
+    //         if(parseConv(conversation).length > 0)
+    //         {
+    //             parsedConv = parsedConv.concat(parseConv(conversation))
+    //         }
+    //     })
+    //     callback(compare(message, parsedConv))
+    // })
+    getTrainingData((messages)=> {
+        callback(compare(message, messages))
     })
 }
 
