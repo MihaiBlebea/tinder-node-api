@@ -27,16 +27,6 @@ const getNewMessages = (callback)=> {
 }
 
 const getResponseToQuestion = (message, callback)=> {
-    // getAllMessages((conversations)=> {
-    //     let parsedConv = []
-    //     conversations.forEach((conversation)=> {
-    //         if(parseConv(conversation).length > 0)
-    //         {
-    //             parsedConv = parsedConv.concat(parseConv(conversation))
-    //         }
-    //     })
-    //     callback(compare(message, parsedConv))
-    // })
     getTrainingData((messages)=> {
         callback(compare(message, messages))
     })
@@ -91,6 +81,7 @@ const parseConv = (conversation)=> {
         if(firstMessage !== 0 && firstMessage < i && ownMessage(conversation[i]))
         {
             result.push({
+                id: conversation[firstMessage]._id,
                 question: conversation[firstMessage].message,
                 answer: conversation[i].message
             })

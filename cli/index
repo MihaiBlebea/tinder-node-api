@@ -4,7 +4,7 @@ const program = require('commander')
 const { prompt } = require('inquirer')
 require('dotenv').config()
 const { sendMessage, sendBroadcast, sendFirstMessage } = require('./../src/services/message')
-const { getResponseToQuestion } = require('./../src/services/chat-bot')
+const { getResponseToQuestion, getTrainingData } = require('./../src/services/chat-bot')
 const { autoLike } = require('./../src/services/auto-like')
 const { runChatBot, runAutoLike } = require('./../src/services/crontab')
 const { storeChatBotData, getChatBotData, updateChatBotData } = require('./../src/services/firebase')
@@ -88,7 +88,9 @@ program
     .command('test')
     .description('Test command')
     .action(()=> {
-        updateChatBotData(['Serban', 'Mihai'])
+        getTrainingData((messages)=> {
+            storeChatBotData(messages)
+        })
     })
 
 program.parse(process.argv)

@@ -1,6 +1,7 @@
 const cron = require('node-cron')
 const { autoLike } = require('./auto-like')
-const { chatbot } = require('./chat-bot')
+const { chatbot, getTrainingData } = require('./chat-bot')
+const { updateChatBotData } = require('./firebase')
 
 
 const runChatBot = ()=> {
@@ -21,7 +22,7 @@ const runAutoLike = ()=> {
 const runStoreMessages = ()=> {
     console.log('runStoreMessages started')
     cron.schedule('0 * * * *', ()=> {
-        autoLike(10)
+        updateChatBotData(['Serban', 'Mihai'])
     })
 }
 
