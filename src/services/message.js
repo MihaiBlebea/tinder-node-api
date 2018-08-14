@@ -32,7 +32,6 @@ const getMatchByUserId = (matches, id)=> {
     })[0]
 }
 
-
 const sendMessage = (match_id, message, callback)=> {
     tinder.authorize(process.env.FACEBOOK_TOKEN, process.env.FACEBOOK_ID, ()=> {
         tinder.sendMessage(match_id, message, (error, result)=> {

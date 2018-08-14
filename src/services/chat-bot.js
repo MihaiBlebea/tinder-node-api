@@ -1,5 +1,6 @@
 const similarity = require('string-similarity')
 const tinder = require('./../tinder')
+const { sendMessage } = require('./message')
 require('dotenv').config()
 
 
@@ -12,6 +13,53 @@ const getAllMessages = (callback)=> {
             }))
         })
     })
+}
+
+const getNewMessages = (callback)=> {
+    tinder.authorize(process.env.FACEBOOK_TOKEN, process.env.FACEBOOK_ID, ()=> {
+        tinder.getUpdates((error, result)=> {
+            if(error) throw error
+            callback(result.matches.map((match)=> {
+                return match.messages
+            }))
+        })
+    })
+}
+
+const getResponseToQuestion = (message, callback)=> {
+    getAllMessages((conversations)=> {
+        let parsedConv = []
+        conversations.forEach((conversation)=> {
+            if(parseConv(conversation).length > 0)
+            {
+                parsedConv = parsedConv.concat(parseConv(conversation))
+            }
+        })
+        callback(compare(message, parsedConv))
+    })
+}
+
+const getTrainingData = (callback)=> {
+    getAllMessages((conversations)=> {
+        let parsedConv = []
+        conversations.forEach((conversation)=> {
+            if(parseConv(conversation).length > 0)
+            {
+                parsedConv = parsedConv.concat(parseConv(conversation))
+            }
+        })
+        callback(parsedConv)
+    })
+}
+
+const getPartnerLastMessage = (conversation)=> {
+    for(let i = conversation.length - 1; i >= 0; i--)
+    {
+        if(conversation[i].to === process.env.TINDER_ID && isQuestion(conversation[i]) === true)
+        {
+            return conversation[i]
+        }
+    }
 }
 
 const isQuestion = (messageObj)=> {
@@ -85,11 +133,29 @@ const compare = (message, messages)=> {
     return result
 }
 
+const chatbot = ()=> {
+    getNewMessages((conversations)=> {
+        conversations.map((conversation)=> {
+            let lastMessage = getPartnerLastMessage(conversation)
+            if(lastMessage)
+            {
+                getResponseToQuestion(lastMessage.message, (result)=> {
+                    sendMessage(lastMessage.match_id, result.answer, (result)=> {
+                        console.log(result)
+                    })
+                })
+            }
+        })
+    })
+}
 
 module.exports = {
     getAllMessages,
-    isQuestion,
-    excludeOwnMessages,
+    getNewMessages,
+    getResponseToQuestion,
+    getPartnerLastMessage,
+    getTrainingData,
     parseConv,
-    compare
+    compare,
+    chatbot
 }

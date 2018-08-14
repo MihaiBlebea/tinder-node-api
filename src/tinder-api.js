@@ -142,7 +142,7 @@ function TinderClient() {
         //     }
         //
         //     var body = res.body || { 'token': null };
-        //     console.log(res.body)
+        //     console.log(body.token)
         //     if (!error && body.token) {
         //         xAuthToken = body.token;
         //         _this.userId = body.user._id;
@@ -156,10 +156,9 @@ function TinderClient() {
         //         callback(error, res);
         //     }
         // });
-        xAuthToken = '0ebfb5e6-f156-4ea0-9581-2c5f2ab28f3b'
+        xAuthToken = '986091f6-867c-4f16-b073-82831fcc2541'
         _this.userId = '5b2ad3a0677dd9b75cb8eeb2'
         _this.defaults = null
-        // callback = makeTinderCallback(callback);
         callback()
     };
 

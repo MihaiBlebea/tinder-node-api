@@ -1,0 +1,21 @@
+{
+    "send:message": [
+        {
+            "type" :    "input",
+            "name" :    "id",
+            "message" : "Enter the id of the match:"
+        },
+        {
+            "type" :    "input",
+            "name" :    "message",
+            "message" : "Enter the message you want to send:"
+        }
+    ],
+    "send:broadcast": [
+        {
+            "type" :    "input",
+            "name" :    "message",
+            "message" : "Enter the message you want to send:"
+        }
+    ]
+}

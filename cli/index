@@ -1,0 +1,93 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+const { prompt } = require('inquirer')
+require('dotenv').config()
+const { sendMessage, sendBroadcast, sendFirstMessage } = require('./../src/services/message')
+const { getResponseToQuestion } = require('./../src/services/chat-bot')
+const { autoLike } = require('./../src/services/auto-like')
+const { runChatBot } = require('./../src/services/crontab')
+const { storeChatBotData, getChatBotData, updateChatBotData } = require('./../src/services/firebase')
+
+const questions = require('./questions.json')
+
+
+program
+    .version('0.1.0')
+    .description('CLI for Tinder')
+
+program
+    .command('send:message')
+    .alias('message')
+    .description('Send a message to a match')
+    .action(()=> {
+        prompt(questions['send:message']).then((answers)=> {
+            sendMessage(answers.id, answers.message, (result)=> {
+                    console.log(result)
+            })
+        })
+    })
+
+
+program
+    .command('send:broadcast')
+    .alias('broadcast')
+    .description('Send a message to a match')
+    .action(()=> {
+        prompt(questions['send:broadcast']).then((answers)=> {
+            sendBroadcast(answers.message)
+        })
+    })
+
+program
+    .command('send:first')
+    .alias('first')
+    .description('Send a first message just to new matches')
+    .action(()=> {
+        prompt(questions['send:broadcast']).then((answers)=> {
+            sendFirstMessage(answers.message)
+        })
+    })
+
+program
+    .command('auto:likes [number]')
+    .alias('likes')
+    .description('Fetch profiles and autolike everyone of them')
+    .action((number)=> {
+        (number !== undefined) ? autoLike(number) : autoLike(10)
+    })
+
+program
+    .command('run:cron [func]')
+    .alias('cron')
+    .description('Run cronjob, just give the name of the function as param')
+    .action((func)=> {
+        switch(func)
+        {
+            case('runChatBot'):
+                runChatBot()
+                break
+            default:
+                runChatBot()
+                break
+        }
+    })
+
+program
+    .command('demo:talk <message>')
+    .alias('talk')
+    .description('Talk with the chatbot')
+    .action((message)=> {
+        getResponseToQuestion(message, (response)=> {
+            console.log(response.answer)
+        })
+    })
+
+program
+    .command('test')
+    .description('Test command')
+    .action(()=> {
+        updateChatBotData(['Serban', 'Mihai'])
+    })
+
+program.parse(process.argv)
