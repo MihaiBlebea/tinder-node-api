@@ -19,7 +19,7 @@ const runChatBot = ()=> {
 const runAutoLike = ()=> {
     console.log('runAutoLike started at ' + getDate())
     cron.schedule('0 * * * *', ()=> {
-        autoLike(100)
+        autoLike(40)
     })
 }
 

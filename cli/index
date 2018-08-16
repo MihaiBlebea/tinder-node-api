@@ -8,6 +8,8 @@ const { getResponseToQuestion, getTrainingData } = require('./../src/services/ch
 const { autoLike } = require('./../src/services/auto-like')
 const { runChatBot, runAutoLike, runStoreMessages } = require('./../src/services/crontab')
 const { storeChatBotData, getChatBotData, updateChatBotData } = require('./../src/services/firebase')
+const { storeNewTask } = require('./../src/services/task')
+
 
 const questions = require('./questions.json')
 
@@ -95,17 +97,7 @@ program
     .command('test')
     .description('Test command')
     .action(()=> {
-        getTrainingData((messages)=> {
-            getChatBotData((oldData)=> {
-                let newData = messages.filter((message)=> {
-                    return oldData.map((oldMessage)=> {
-                        return oldMessage.id
-                    }).includes(message.id) === false
-                })
-                updateChatBotData(newData)
-            })
-            // storeChatBotData(messages)
-        })
+        storeNewTask('New Task', '10:02', 'Hello! How are you?', ['5b2ad3a0677dd9b75cb8eeb2'])
     })
 
 program.parse(process.argv)

@@ -46,7 +46,6 @@ const likeProfile = (id, callback)=> {
     })
 }
 
-
 const autoLike = (number)=> {
     canLike((result)=> {
         if(result === true)
@@ -77,7 +76,6 @@ const autoLike = (number)=> {
 
 
 module.exports = {
-    canLike,
     getProfiles,
     likeProfile,
     autoLike

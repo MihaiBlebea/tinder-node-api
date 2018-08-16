@@ -27,14 +27,24 @@ const updateChatBotData = (payload)=> {
     })
 }
 
-const storeTask = (task)=> {
+const storeTask = (task, callback)=> {
     if(typeof task !== 'object') throw 'Task should be an object'
-    database.ref('tasks').set(task
-    )
+    getTasks((oldTasks)=> {
+        let newTasks = (oldTasks !== null) ? oldTasks.concat([task]) : [task]
+        database.ref('tasks').set(newTasks)
+    })
+}
+
+const getTasks = (callback)=> {
+    database.ref('tasks').once('value', (snapshot)=> {
+        callback(snapshot.val())
+    })
 }
 
 module.exports = {
     storeChatBotData,
     getChatBotData,
-    updateChatBotData
+    updateChatBotData,
+    storeTask,
+    getTasks
 }

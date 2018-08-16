@@ -1,7 +1,7 @@
 const similarity = require('string-similarity')
 const tinder = require('./../tinder')
 const { sendMessage } = require('./message')
-const { getChatBotData, updateChatBotData } = require('firebase')
+const { getChatBotData, updateChatBotData } = require('./firebase')
 require('dotenv').config()
 
 
@@ -29,7 +29,6 @@ const getNewMessages = (callback)=> {
 
 const getResponseToQuestion = (message, callback)=> {
     getTrainingData((messages)=> {
-        console.log(messages)
         callback(compare(message, messages))
     })
 }
@@ -121,7 +120,8 @@ const compare = (message, messages)=> {
     for(let i = 0; i < messages.length; i++)
     {
         let score = similarity.compareTwoStrings(message, messages[i].question)
-        if(result.score < score)
+        if(score < 0.5) console.log('Score is below 0.5. No message sent')
+        if(score >= 0.5 && result.score < score)
         {
             result = {
                 score: score,
@@ -154,9 +154,7 @@ module.exports = {
     getAllMessages,
     getNewMessages,
     getResponseToQuestion,
-    getPartnerLastMessage,
     getTrainingData,
-    updateStorageWithNewMessages,
     parseConv,
     compare,
     chatbot
