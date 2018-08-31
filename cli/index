@@ -6,9 +6,10 @@ require('dotenv').config()
 const { sendMessage, sendBroadcast, sendFirstMessage } = require('./../src/services/message')
 const { getResponseToQuestion, getTrainingData } = require('./../src/services/chat-bot')
 const { autoLike } = require('./../src/services/auto-like')
-const { runChatBot, runAutoLike, runStoreMessages } = require('./../src/services/crontab')
+const { runChatBot, runAutoLike, runStoreMessages, runTasks } = require('./../src/services/crontab')
 const { storeChatBotData, getChatBotData, updateChatBotData } = require('./../src/services/firebase')
 const { storeNewTask } = require('./../src/services/task')
+const { getLastMatches } = require('./../src/services/profiles')
 
 
 const questions = require('./questions.json')
@@ -75,6 +76,9 @@ program
             case('runStoreMessages'):
                 runStoreMessages()
                 break
+            case('runTasks'):
+                runTasks()
+                break
             default:
                 runChatBot()
                 runAutoLike()
@@ -97,7 +101,15 @@ program
     .command('test')
     .description('Test command')
     .action(()=> {
-        storeNewTask('New Task', '10:02', 'Hello! How are you?', ['5b2ad3a0677dd9b75cb8eeb2'])
+        getLastMatches(20, (matches)=> {
+            storeNewTask('New Task', '10:02', 'Hello! How are you?', matches)
+        })
+        // storeNewTask('New Task', '10:02', 'Hello! How are you?', matches)
+        // getLastMatches(20, (matches)=> {
+        //     matches.map((match)=> {
+        //         console.log(match.person.name, match.created_date)
+        //     })
+        // })
     })
 
 program.parse(process.argv)

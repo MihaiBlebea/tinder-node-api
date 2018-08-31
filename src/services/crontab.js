@@ -2,6 +2,7 @@ const cron = require('node-cron')
 const { autoLike } = require('./auto-like')
 const { chatbot, getTrainingData, updateStorageWithNewMessages } = require('./chat-bot')
 const { updateChatBotData } = require('./firebase')
+const { runTask } = require('./task')
 
 
 const getDate = ()=> {
@@ -32,8 +33,19 @@ const runStoreMessages = ()=> {
     })
 }
 
+const runTasks = ()=> {
+    console.log('runTasks started at ' + getDate())
+    cron.schedule('* * * * *', ()=> {
+        console.log('runTasks was run at ' + getDate())
+        runTask((result)=> {
+            console.log('runTasks was run at ' + getDate(), result)
+        })
+    })
+}
+
 module.exports = {
     runChatBot,
     runAutoLike,
-    runStoreMessages
+    runStoreMessages,
+    runTasks
 }

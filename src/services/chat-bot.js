@@ -29,7 +29,7 @@ const getNewMessages = (callback)=> {
 
 const getResponseToQuestion = (message, callback)=> {
     getTrainingData((messages)=> {
-        callback(compare(message, messages))
+        callback(compare(0.5, message, messages))
     })
 }
 
@@ -114,14 +114,13 @@ const ownMessage = (message)=> {
     return (message.from === process.env.TINDER_ID) ? true : false
 }
 
-const compare = (message, messages)=> {
+const compare = (minimumScore, message, messages)=> {
     let result = {}
     result.score = 0
     for(let i = 0; i < messages.length; i++)
     {
         let score = similarity.compareTwoStrings(message, messages[i].question)
-        if(score < 0.5) console.log('Score is below 0.5. No message sent')
-        if(score >= 0.5 && result.score < score)
+        if(score >= minimumScore && result.score < score)
         {
             result = {
                 score: score,
